@@ -2,9 +2,7 @@ name: pyvhr
 channels:
   - pytorch
   - rapidsai
-  - anaconda
   - conda-forge
-  - defaults
 dependencies:
   - cudatoolkit=11.3
   - cusignal=21.08.00
@@ -23,11 +21,10 @@ dependencies:
     - ipython==7.28.0
     - ipywidgets==7.6.5
     - lmfit==1.0.3
-    - mediapipe==0.8.8.1
+    - mediapipe
     - plotly==5.3.1
-    - pybdf==0.2.5
-    - PySimpleGUI==4.53.0
+    - PySimpleGUI==4.60.5.0
     - scikit_posthocs==0.6.7
     - scikit-image==0.18.3
     - tqdm==4.62.3
-    - tensorflow==2.5.0
+    - tensorflow
