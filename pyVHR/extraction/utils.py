@@ -337,11 +337,15 @@ def sliding_straded_win_idx(N, wsize, stride, fps):
     Returns:
         List of ranges, each one contains the indices of a window, and a 1D ndarray of times in seconds, where each one is the center of a window.
     """
-    wsize_fr = wsize*fps
     stride_fr = stride*fps
+    if wsize <= 0:
+        wsize_fr = N
+        num_win = 1
+    else:
+        wsize_fr = wsize*fps
+        num_win = int((N-wsize_fr)/stride_fr)+1
     idx = []
     timesES = []
-    num_win = int((N-wsize_fr)/stride_fr)+1
     s = 0
     for i in range(num_win):
         idx.append(np.arange(s, s+wsize_fr))
