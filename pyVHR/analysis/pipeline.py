@@ -17,6 +17,7 @@ from inspect import getmembers, isfunction
 import os.path
 from pyVHR.deepRPPG.mtts_can import *
 from pyVHR.deepRPPG.hr_cnn import *
+from pyVHR.deepRPPG.transformer import *
 from pyVHR.extraction.utils import *
 
 class Pipeline():
@@ -37,7 +38,7 @@ class Pipeline():
                     cuda=True, 
                     roi_method='convexhull', 
                     roi_approach='holistic', 
-                    methods=['cpu_CHROM, cpu_POS, cpu_LGI'], 
+                    methods=['cpu_CHROM', 'cpu_POS', ' cpu_LGI'], 
                     estimate='holistic', 
                     movement_thrs=[10, 5, 2],
                     patch_size=30, 
@@ -169,8 +170,8 @@ class Pipeline():
                                                             'maxHz':Pipeline.maxHz, 
                                                             'fps':'adaptive', 
                                                             'order':6})
-        if verb:
-            print(f' - Pre-filter applied: {method_to_call.__name__}')
+            if verb:
+                print(f' - Pre-filter applied: {method_to_call.__name__}')
 
         ## 6. BVP extraction multimethods
         bvps_win = []
@@ -192,6 +193,8 @@ class Pipeline():
                 pars = {'fps':'adaptive'}
             elif 'PCA' in method or 'ICA' in method:
                 pars = {'component': 'all_comp'}
+            elif 'SSR' in method:
+                pars = {'fps': fps}
             else:
                 pars = {}
 
@@ -773,7 +776,7 @@ class DeepPipeline(Pipeline):
     def __init__(self):
         pass
 
-    def run_on_video(self, videoFileName, cuda=True, method='MTTS_CAN', bpm_type='welch', post_filt=False, verb=True, crop_face=False):
+    def run_on_video(self, videoFileName, wsize=6, cuda=True, method='MTTS_CAN', bpm_type='welch', post_filt=False, verb=True, crop_face=False):
         """ 
         Runs the pipeline on a specific video file.
 
@@ -798,7 +801,6 @@ class DeepPipeline(Pipeline):
         if verb:
             print('\nProcessing Video: ' + videoFileName)
         fps = get_fps(videoFileName)
-        wsize = 6
         
         sp = SignalProcessing()
         frames = sp.extract_raw(videoFileName)
@@ -812,6 +814,9 @@ class DeepPipeline(Pipeline):
             bvps, timesES = BVP_windowing(bvps_pred, wsize, fps, stride=1)
         elif method == 'HR_CNN':
             bvps_pred = HR_CNN_bvp_pred(frames)
+            bvps, timesES = BVP_windowing(bvps_pred, wsize, fps, stride=1)
+        elif method == 'TRANSFORMER':
+            bvps_pred = RPPG_TRANSFORMER_bvp_pred(frames)
             bvps, timesES = BVP_windowing(bvps_pred, wsize, fps, stride=1)
         else:
             print("Deep Method unsupported!")
@@ -842,7 +847,7 @@ class DeepPipeline(Pipeline):
         if verb:
             print('\n...done!\n')
 
-        return timesES, median_bpmES
+        return bvps, timesES, bpmES, median_bpmES
 
     def run_on_dataset(self, configFilename, verb=True):
         """ 
