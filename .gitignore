@@ -131,10 +131,6 @@ dmypy.json
 
 #vscode
 .vscode/*
-!.vscode/settings.json
-!.vscode/tasks.json
-!.vscode/launch.json
-!.vscode/extensions.json
 *.code-workspace
 
 # Local History for Visual Studio Code
@@ -181,3 +177,11 @@ Thumbs.db
 # Editor backup files #
 #######################
 *~
+
+# Pickle files #
+################
+*.pkl
+
+# Face Detection Models #
+#########################
+**/face_detection/
