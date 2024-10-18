@@ -1,30 +1,30 @@
 name: pyvhr
 channels:
   - pytorch
+  - nvidia
   - rapidsai
   - conda-forge
 dependencies:
-  - cudatoolkit=11.3
-  - cusignal=21.08.00
-  - hdf5=1.10.6
-  - pip=21.3.1
-  - pytables=3.6.1
-  - pytorch=1.10.0
-  - pytorch-mutex=1.0
-  - python=3.9.7
-  - torchaudio=0.10.0
-  - torchvision=0.11.1
+  - cuda-python
+  - cusignal
+  - hdf5
+  - pip
+  - pytables
+  - pytorch
+  - pytorch-mutex
+  - torchaudio
+  - torchvision
   - pip:
-    - asposestorage==1.0.2
-    - autorank==1.1.1
-    - biosppy==0.7.3
-    - ipython==7.28.0
-    - ipywidgets==7.6.5
-    - lmfit==1.0.3
+    - asposestorage
+    - autorank
+    - biosppy
+    - ipython
+    - ipywidgets
+    - lmfit
     - mediapipe
-    - plotly==5.3.1
-    - PySimpleGUI==4.60.5.0
-    - scikit_posthocs==0.6.7
-    - scikit-image==0.18.3
-    - tqdm==4.62.3
+    - plotly
+    - PySimpleGUI
+    - scikit_posthocs
+    - scikit-image
+    - tqdm
     - tensorflow
