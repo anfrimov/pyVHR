@@ -8,6 +8,8 @@ from skimage.util import img_as_float
 import scipy.io
 from scipy.sparse import spdiags
 import h5py
+import os
+import requests
 
 def preprocess_raw_video(frames, fs=30, dim=36):
   """A slightly different version from the original: 
@@ -112,4 +114,5 @@ def MTTS_CAN_deep(frames, fs, model_checkpoint=None, batch_size=100, dim=36, img
     [b_pulse, a_pulse] = butter(1, [0.75 / fs * 2, 2.5 / fs * 2], btype='bandpass')
     #[b_pulse, a_pulse] = butter(1, [0.65 / fs * 2, 2.5 / fs * 4], btype='bandpass')
     pulse_pred = scipy.signal.filtfilt(b_pulse, a_pulse, np.double(pulse_pred))
+    
   return pulse_pred
